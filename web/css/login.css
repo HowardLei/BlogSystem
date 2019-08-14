@@ -1,0 +1,10 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    background: red;
+}
+body>p {
+    display: block;
+    margin: 500px auto;
+    background: darkred;
+}
