@@ -3,6 +3,7 @@ package com.blogSystem.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * DBConnection class
@@ -18,7 +19,7 @@ public class DBConnection {
     private static Connection connection = null;
 
     public static Connection getConnection() {
-        if (connection == null) {
+        if (Objects.isNull(connection)) {
             try {
                 Class.forName(DRIVER_CLASS);
                 connection = DriverManager.getConnection(URL, LOGIN_USER, PASSWORD);

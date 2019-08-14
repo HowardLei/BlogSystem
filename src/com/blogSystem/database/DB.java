@@ -4,6 +4,7 @@ import com.blogSystem.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -14,18 +15,22 @@ import java.util.*;
  */
 public class DB {
     public static void main(String[] args) {
-        var user = new User("demo","123456","wangnima");
-        var map = new HashMap<String, String>(1);
-        map.put("name", user.getName(true));
-        map.put("userName", user.getUserName(true));
-        try {
-            delete("users", map);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        var user = new User("admin", "123456", "hhh");
+        var attrs = new String[] {"userName"};
+        var list = select("select * from users;", attrs);
+        var attrsMap = new HashMap<String, String>();
+        attrsMap.put("userName", user.getUserName(true));
+        attrsMap.put("password", user.getPassword(true));
+        System.out.println(select("users", attrsMap));
     }
-    public static List<Map<String, Object>> select(String sql, String[] strings) {
-        var list = new ArrayList<Map<String, Object>>();
+    /**
+     * 查找数据库当中的元素
+     * @param sql 查找的 SQL 语句
+     * @param attrs 想要获得的属性名
+     * @return 属性列表
+     */
+    public static List<Map<String, Object>> select(String sql, String[] attrs) {
+        var list = new ArrayList<Map<String, Object>>(10);
         // 加载数据库驱动
         try {
             // 建立数据库链接
@@ -34,9 +39,9 @@ public class DB {
             var statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                var result = new HashMap<String, Object>();
-                for (var string: strings) {
-                    result.put(string, resultSet.getObject(string));
+                var result = new HashMap<String, Object>(5);
+                for (var attr: attrs) {
+                    result.put(attr, resultSet.getObject(attr));
                 }
                 list.add(result);
             }
@@ -46,6 +51,30 @@ public class DB {
             DBConnection.close();
         }
         return list;
+    }
+
+    /***
+     * 查找数据库当中是否有该用户
+     * @param tableName 需要查找的表名
+     * @param attrMap 属性字典 key: 表当中的列名，value: 其中的属性值
+     * @return 属性与属性值是否完全一一对应
+     */
+    public static boolean select(String tableName, Map<String, String> attrMap) {
+        var connection = DBConnection.getConnection();
+        var stringBuilder = new StringBuilder("select * from ").append(tableName);
+        if (Objects.nonNull(attrMap)) {
+            stringBuilder.append(" where ");
+            var res = attrMap.toString().substring(1, attrMap.toString().length() - 1).replace(",", " and");
+            stringBuilder.append(res).append(';');
+            try {
+                Statement statement = connection.createStatement();
+                var resultSet = statement.executeQuery(stringBuilder.toString());
+                // FIXME: 当取到结果的时候，不知道如何判断正确与否了。
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
     public static boolean insert(String sql, Object[] objects) throws SQLException {
         var connection = DBConnection.getConnection();
@@ -65,11 +94,10 @@ public class DB {
      */
     public static boolean delete(String tableName, Map<String, String> attrsMap) throws SQLException {
         var connection = DBConnection.getConnection();
-        var stringBuilder = new StringBuilder("delete from ");
-        stringBuilder.append(tableName);
+        var stringBuilder = new StringBuilder("delete from ").append(tableName);
         if (Objects.nonNull(attrsMap)) {
             stringBuilder.append(" where ");
-            var attrsMapStr = attrsMap.toString().substring(1, attrsMap.toString().length() - 1).replace(",", " or");
+            var attrsMapStr = attrsMap.toString().substring(1, attrsMap.toString().length() - 1).replace(",", " or ");
             stringBuilder.append(attrsMapStr);
         }
         var preparedStatement = connection.prepareStatement(stringBuilder.toString());
