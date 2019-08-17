@@ -19,7 +19,7 @@ public class DBConnection {
     public static Connection getConnection() {
         if (Objects.isNull(connection)) {
             try {
-                var driverClass = Class.forName(DRIVER_CLASS);
+                var driverClass = Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, LOGIN_USER, PASSWORD);
                 System.out.println("链接建立成功，已连接数据库");
             } catch (ClassNotFoundException e) {

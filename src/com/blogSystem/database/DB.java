@@ -1,8 +1,8 @@
 package com.blogSystem.database;
 
-import com.blogSystem.entity.User;
-
-import java.sql.*;
+import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -12,14 +12,11 @@ import java.util.*;
  * @date 2019-08-02
  */
 public class DB {
-    public static void main(String[] args) {
-        var user = new User("admin", "123456", "hhh");
-        var attrs = new String[] {"userName"};
-        var list = select("select * from users;", attrs);
-        var attrsMap = new HashMap<String, String>();
-        attrsMap.put("userName", user.getUserName(true));
-        attrsMap.put("password", user.getPassword(true));
-        System.out.println(select("users", attrsMap));
+    public static void main(String[] args) throws ClassNotFoundException {
+        var userClass = Class.forName("com.blogSystem.entity.User");
+        for (Field field : userClass.getDeclaredFields()) {
+            System.out.println(field.getName());
+        }
     }
     /**
      * 查找数据库当中的元素
@@ -67,10 +64,22 @@ public class DB {
             try {
                 var statement = connection.createStatement();
                 var resultSet = statement.executeQuery(stringBuilder.toString());
-                var searchUserName = resultSet.getString("userName");
-                var searchPassword = resultSet.getString("password");
-                return (Objects.equals(searchUserName, attrMap.get("userName")) && Objects.equals(searchPassword, attrMap.get("password")));
-            } catch (SQLException e) {
+                while (resultSet.next()) {
+                    var userClass = Class.forName("com.blogSystem.entity.User");
+                    var fields = userClass.getDeclaredFields();
+                    var propList = new String[fields.length];
+                    for (var i = 0; i < fields.length; i++) {
+                        propList[i] = fields[i].getName();
+                    }
+                    for (var i = 0; i < propList.length; i++) {
+                        var dataFromSet = String.format("\'%s\'", resultSet.getString(propList[i]));
+                        if (!Objects.equals(dataFromSet, attrMap.get(propList[i]))) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

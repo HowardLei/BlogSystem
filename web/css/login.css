@@ -1,10 +1,11 @@
 *{
     margin: 0px;
     padding: 0px;
-    background: red;
 }
 body>p {
     display: block;
-    margin: 500px auto;
-    background: darkred;
+    width: 1000px;
+    height: 20px;
+    margin: 0px auto;
+    background: red;
 }

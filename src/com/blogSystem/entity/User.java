@@ -7,35 +7,27 @@ package com.blogSystem.entity;
  * @date 2019-08-13
  */
 public class User {
-    private String userName;
-    private String password;
-    private String name;
+    private String account;
+    private String pwd;
 
-    public User(String userName, String password, String name) {
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
+    public User(String account, String pwd) {
+        this.account = account;
+        this.pwd = pwd;
     }
 
-    public String getUserName(boolean forSQL) {
-        if (forSQL) {
-            return String.join(userName, "\'", "\'");
-        } else {
-            return userName;
-        }
+    public String getAccount() {
+        return account;
     }
 
-    public String getPassword(boolean forSQL) {
-        if (forSQL) {
-            return String.join(password, "\'", "\'");
-        }
-        return password;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
-    public String getName(boolean forSQL) {
-        if (forSQL) {
-            return String.join(name, "\'", "\'");
-        }
-        return name;
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 }
