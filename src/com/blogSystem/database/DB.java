@@ -2,9 +2,7 @@ package com.blogSystem.database;
 
 import com.blogSystem.entity.User;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -64,12 +62,13 @@ public class DB {
         var stringBuilder = new StringBuilder("select * from ").append(tableName);
         if (Objects.nonNull(attrMap)) {
             stringBuilder.append(" where ");
-            var res = attrMap.toString().substring(1, attrMap.toString().length() - 1).replace(",", " and");
+            String res = attrMap.toString().substring(1, attrMap.toString().length() - 1).replace(",", " and");
             stringBuilder.append(res).append(';');
             try {
-                Statement statement = connection.createStatement();
+                var statement = connection.createStatement();
                 var resultSet = statement.executeQuery(stringBuilder.toString());
-                // FIXME: 当取到结果的时候，不知道如何判断正确与否了。
+                var searchUserName = resultSet.getString("userName");
+                var searchPassword = resultSet.getString("password");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
