@@ -69,6 +69,7 @@ public class DB {
                 var resultSet = statement.executeQuery(stringBuilder.toString());
                 var searchUserName = resultSet.getString("userName");
                 var searchPassword = resultSet.getString("password");
+                return (Objects.equals(searchUserName, attrMap.get("userName")) && Objects.equals(searchPassword, attrMap.get("password")));
             } catch (SQLException e) {
                 e.printStackTrace();
             }

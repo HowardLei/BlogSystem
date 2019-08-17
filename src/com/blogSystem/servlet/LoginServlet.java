@@ -31,6 +31,7 @@ public class LoginServlet extends HttpServlet {
         map.put("password", password);
         var res = DB.select("users", map);
         if (res) {
+            response.sendRedirect("/home.html");
         }
     }
     @Override

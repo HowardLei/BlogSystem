@@ -19,7 +19,7 @@ public class DBConnection {
     public static Connection getConnection() {
         if (Objects.isNull(connection)) {
             try {
-                Class.forName(DRIVER_CLASS);
+                var driverClass = Class.forName(DRIVER_CLASS);
                 connection = DriverManager.getConnection(URL, LOGIN_USER, PASSWORD);
                 System.out.println("链接建立成功，已连接数据库");
             } catch (ClassNotFoundException e) {
@@ -33,7 +33,7 @@ public class DBConnection {
         return connection;
     }
     public static void close() {
-        if (connection != null) {
+        if (Objects.nonNull(connection)) {
             try {
                 connection.close();
                 System.out.println("链接关闭成功");
