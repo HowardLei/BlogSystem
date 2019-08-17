@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         if (res) {
             response.sendRedirect("html/home.html");
         } else {
+            // FIXME: 2019-08-17 当登录失败了以后，还不知道如何处理
             request.getRequestDispatcher("");
         }
     }
