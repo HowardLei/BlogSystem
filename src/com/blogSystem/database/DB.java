@@ -1,8 +1,6 @@
 package com.blogSystem.database;
 
-import java.lang.reflect.Field;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -12,11 +10,7 @@ import java.util.*;
  * @date 2019-08-02
  */
 public class DB {
-    public static void main(String[] args) throws ClassNotFoundException {
-        var userClass = Class.forName("com.blogSystem.entity.User");
-        for (Field field : userClass.getDeclaredFields()) {
-            System.out.println(field.getName());
-        }
+    public static void main(String[] args) {
     }
     /**
      * 查找数据库当中的元素
@@ -85,15 +79,42 @@ public class DB {
         }
         return false;
     }
-    public static boolean insert(String sql, Object[] objects) throws SQLException {
+    public static boolean insert(String sql, Object ... objects) throws SQLException {
         var connection = DBConnection.getConnection();
         var preparedStatement = connection.prepareStatement(sql);
-        for (var i = 0; i < objects.length; i++) {
-            preparedStatement.setObject(i + 1, objects[i]);
+        if (objects.length > 0) {
+            for (var i = 0; i < objects.length; i++) {
+                preparedStatement.setObject(i + 1, objects[i]);
+            }
         }
         return preparedStatement.execute();
     }
 
+    public static boolean insert(String tableName , Map<String, Object> attrMap) {
+        var connection = DBConnection.getConnection();
+        var stringBuilder = new StringBuilder("insert into ").append(tableName);
+        // 将属性名转换成字符串
+        var attrSet = attrMap.keySet();
+        var transArray = new String[attrSet.size()];
+        transArray = attrSet.toArray(transArray);
+        var str = Arrays.toString(transArray);
+        str = str.replace('[', '(').replace(']', ')');
+        stringBuilder.append(str).append(" values ");
+        // 将属性值转换成字符串
+        var values = attrMap.values();
+        transArray = values.toArray(transArray);
+        str = Arrays.toString(transArray);
+        str = str.replace('[', '(').replace(']', ')');
+        stringBuilder.append(str).append(";");
+        try {
+            var preparedStatement = connection.prepareStatement(stringBuilder.toString());
+            return preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            return false;
+        }
+    }
     /***
      * 删除表当中的元素
      * @param tableName 表名

@@ -1,11 +1,14 @@
 package com.blogSystem.servlet;
 
+import com.blogSystem.database.DB;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * RegisterServlet class
@@ -21,8 +24,23 @@ public class RegisterServlet extends HttpServlet {
         request.setCharacterEncoding(UTF8ENCODING);
         response.setCharacterEncoding(UTF8ENCODING);
         response.setContentType("type=text/html;charset=utf-8");
-        var userName = request.getParameter("userName");
-        var password = request.getParameter("password");
+        var account = request.getParameter("account");
+        var pwd = request.getParameter("pwd");
+        var infoMap = new HashMap<String, Object>(2);
+        infoMap.put("account", String.format("\'%s\'", account));
+        infoMap.put("pwd", String.format("\'%s\'", pwd));
+        var isInsert = DB.insert("user", infoMap);
+        // 创建返回值的字典
+        var jsonMap = new HashMap<String, String>();
+        if (isInsert) {
+            jsonMap.put("\"msg\"", "\"200\"");
+
+        } else {
+            jsonMap.put("\"msg\"", "\"403\"");
+        }
+        var jsonStr = jsonMap.toString().substring(1, jsonMap.toString().length() - 1).replace('=', ':');
+        System.out.println(jsonStr);
+        response.getWriter().append(jsonStr);
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

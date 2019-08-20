@@ -1,23 +1,28 @@
+// 这个地方是不是应该引入 jQuery？
 /***
  * 获得数据，检查数据的合法性
  */
 function getData() {
-    var password = $("#password").val()
-    var repassword = $("#rePassword").val()
-    if (password != repassword) {
-        alert("对不起，您的密码输入有误。请重新输入")
+    var password = document.getElementsByName('pwd')[0].value
+    var rePassword = document.getElementsByName('rePassword')[0].value
+    if (password == null || rePassword == null) {
+        alert("对不起，请查看一下有没有信息没有输入进去。")
+        return
+    }
+    if (password != rePassword) {
+        alert("对不起，您两次密码输入的不一致，请再次查看一下。")
     } else {
-        excuteData($("#userName").val(), password)
+        excuteData(document.getElementsByName('account')[0].value, password)
     }
 }
 
 /***
  * 处理注册的数据。
- * @param userName
- * @param password
+ * @param account 用户名
+ * @param password 密码
  */
-function excuteData(userName, password) {
-    var data = {"userName": userName, "password": password}
+function excuteData(account, password) {
+    var data = {"account": account, "pwd": password}
     $.ajax({
         url: "/blogSystem/register",    //请求的url地址
         dataType: "json",   // 返回格式为json
@@ -27,7 +32,7 @@ function excuteData(userName, password) {
         "beforeSend": function () {
             //请求前的处理
         },
-        // 注意：当从后台要到执行成功的方法时，必须要返回一个 JSON 对象才行
+        // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
             //请求成功时处理
             if (req["code"] == "200") {
