@@ -24,7 +24,7 @@ function getData() {
 function excuteData(account, password) {
     var data = {"account": account, "pwd": password}
     $.ajax({
-        url: "/blogSystem/register",    //请求的url地址
+        url: "/BlogSystem/register",    //请求的url地址
         dataType: "json",   // 返回格式为json
         async: true,// 请求是否异步，默认为异步，这也是ajax重要特性
         data: data, // 参数值
@@ -35,10 +35,14 @@ function excuteData(account, password) {
         // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
             //请求成功时处理
+            alert("处理成功")
             if (req["code"] == "200") {
-                alert("恭喜你，注册成功")
+                alert("恭喜你，注册成功！快去看看这个新奇的世界做点笔记吧。")
+                window.open("/BlogSystem")
             } else if (req["code"] == "403") {
-                alert("对不起，该用户已经注册了")
+                alert("对不起，该用户已经注册了。换个名字吧")
+            } else {
+                alert("我也不知道咋了，咋就错了")
             }
         },
         "complete": function () {
@@ -46,7 +50,7 @@ function excuteData(account, password) {
         },
         "error": function () {
             // 请求出错处理
-            alert("出错了");
+            alert("出错了")
         }
     })
 }

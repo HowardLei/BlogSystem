@@ -26,19 +26,18 @@ public class RegisterServlet extends HttpServlet {
         response.setContentType("type=text/html;charset=utf-8");
         var account = request.getParameter("account");
         var pwd = request.getParameter("pwd");
-        var infoMap = new HashMap<String, Object>(2);
+        var infoMap = new HashMap<String, String>(2);
         infoMap.put("account", String.format("\'%s\'", account));
         infoMap.put("pwd", String.format("\'%s\'", pwd));
         var isInsert = DB.insert("user", infoMap);
         // 创建返回值的字典
         var jsonMap = new HashMap<String, String>();
         if (isInsert) {
-            jsonMap.put("\"msg\"", "\"200\"");
-
+            jsonMap.put("\"code\"", "\"200\"");
         } else {
-            jsonMap.put("\"msg\"", "\"403\"");
+            jsonMap.put("\"code\"", "\"403\"");
         }
-        var jsonStr = jsonMap.toString().substring(1, jsonMap.toString().length() - 1).replace('=', ':');
+        var jsonStr = jsonMap.toString().replace("=", ": ");
         System.out.println(jsonStr);
         response.getWriter().append(jsonStr);
     }
