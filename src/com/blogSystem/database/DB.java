@@ -12,9 +12,6 @@ import java.util.*;
  */
 public class DB {
     public static final String AND = " and";
-    public static final String OR = " or";
-    public static void main(String[] args) {
-    }
     /**
      * 查找数据库当中的元素
      * @param sql 查找的 SQL 语句
@@ -136,7 +133,7 @@ public class DB {
      * @param tableName 表名
      * @param attrsMap 属性字典 key: 表当中的列名，value: 其中的属性值
      * @return 是否删除成功
-     * @throws SQLException
+     * @throws SQLException 当执行 SQL 语句失败的时候，抛出此异常。
      */
     public static boolean delete(String tableName, Map<String, String> attrsMap) throws SQLException {
         var connection = DBConnection.getConnection();
