@@ -11,6 +11,8 @@ import java.util.*;
  * @date 2019-08-02
  */
 public class DB {
+    public static final String AND = " and";
+    public static final String OR = " or";
     public static void main(String[] args) {
     }
     /**
@@ -19,8 +21,8 @@ public class DB {
      * @param attrs 想要获得的属性名
      * @return 属性列表
      */
-    public static List<Map<String, Object>> select(String sql, String[] attrs) {
-        var list = new ArrayList<Map<String, Object>>(10);
+    public static List<Map<String, Object>> select(String sql, String ... attrs) {
+        var list = new ArrayList<Map<String, Object>>(5);
         // 加载数据库驱动
         try {
             // 建立数据库链接
@@ -40,6 +42,7 @@ public class DB {
         } finally {
             DBConnection.close();
         }
+        list.trimToSize();
         return list;
     }
 
@@ -47,14 +50,15 @@ public class DB {
      * 查找数据库当中是否有该用户
      * @param tableName 需要查找的表名
      * @param attrMap 属性字典 key: 表当中的列名，value: 其中的属性值
+     * @param predicate SQL 语句当中的谓词,
      * @return 属性与属性值是否完全一一对应
      */
-    public static boolean select(String tableName, Map<String, String> attrMap) {
+    public static boolean select(String tableName, Map<String, String> attrMap, String predicate) {
         var connection = DBConnection.getConnection();
         var stringBuilder = new StringBuilder("select * from ").append(tableName);
         if (Objects.nonNull(attrMap)) {
             stringBuilder.append(" where ");
-            String res = attrMap.toString().substring(1, attrMap.toString().length() - 1).replace(",", " and");
+            String res = attrMap.toString().substring(1, attrMap.toString().length() - 1).replace(",", predicate);
             stringBuilder.append(res).append(';');
             try {
                 var statement = connection.createStatement();
@@ -91,8 +95,14 @@ public class DB {
         return preparedStatement.execute();
     }
 
+    /**
+     * 向数据库当中添加数据
+     * @param tableName 表名
+     * @param attrMap 属性字典 key: 表当中的列名，value: 其中的属性值
+     * @return 是否添加成功
+     */
     public static boolean insert(String tableName , Map<String, String> attrMap) {
-        if (select(tableName, attrMap)) {
+        if (Objects.isNull(tableName) || Objects.isNull(attrMap)) {
             return false;
         } else {
             var connection = DBConnection.getConnection();
@@ -113,6 +123,7 @@ public class DB {
             try {
                 var statement = connection.createStatement();
                 var execute = statement.executeUpdate(stringBuilder.toString());
+                System.out.println(execute);
                 return execute == 1;
             } catch (SQLException e) {
                 e.printStackTrace();

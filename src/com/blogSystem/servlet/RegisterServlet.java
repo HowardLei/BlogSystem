@@ -29,16 +29,20 @@ public class RegisterServlet extends HttpServlet {
         var infoMap = new HashMap<String, String>(2);
         infoMap.put("account", String.format("\'%s\'", account));
         infoMap.put("pwd", String.format("\'%s\'", pwd));
-        var isInsert = DB.insert("user", infoMap);
+        var isInsert = false;
+        var sql = String.format("select account from user where account = '%s';", account);
+        var list = DB.select(sql, "account");
+        if (list.size() == 0) {
+            isInsert = DB.insert("user", infoMap);
+        }
         // 创建返回值的字典
-        var jsonMap = new HashMap<String, String>();
+        var jsonMap = new HashMap<String, String>(1);
         if (isInsert) {
             jsonMap.put("\"code\"", "\"200\"");
         } else {
             jsonMap.put("\"code\"", "\"403\"");
         }
         var jsonStr = jsonMap.toString().replace("=", ": ");
-        System.out.println(jsonStr);
         response.getWriter().append(jsonStr);
     }
     @Override

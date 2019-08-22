@@ -35,14 +35,13 @@ function excuteData(account, password) {
         // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
             //请求成功时处理
-            alert("处理成功")
             if (req["code"] == "200") {
                 alert("恭喜你，注册成功！快去看看这个新奇的世界做点笔记吧。")
                 window.open("/BlogSystem")
             } else if (req["code"] == "403") {
-                alert("对不起，该用户已经注册了。换个名字吧")
+                alert("对不起，该用户已经注册了。换个名字吧。")
             } else {
-                alert("我也不知道咋了，咋就错了")
+                alert("我也不知到为什么，就是错了。")
             }
         },
         "complete": function () {
