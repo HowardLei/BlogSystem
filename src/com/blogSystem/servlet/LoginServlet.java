@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
         var map = new HashMap<String, String>(2);
         map.put("account", String.format("\'%s\'", account));
         map.put("pwd", String.format("\'%s\'", pwd));
-        var res = DB.select("user", map);
+        var res = DB.select("user", map, DB.AND);
         if (res) {
             response.sendRedirect("html/home.html");
         } else {
