@@ -12,13 +12,18 @@ import java.util.*;
  */
 public class DB {
     public static final String AND = " and";
+
+    public static void main(String[] args) {
+    }
+
     /**
      * 查找数据库当中的元素
-     * @param sql 查找的 SQL 语句
+     *
+     * @param sql   查找的 SQL 语句
      * @param attrs 想要获得的属性名
      * @return 属性列表
      */
-    public static List<Map<String, Object>> select(String sql, String ... attrs) {
+    public static List<Map<String, Object>> select(String sql, String... attrs) {
         var list = new ArrayList<Map<String, Object>>(5);
         // 加载数据库驱动
         try {
@@ -29,7 +34,7 @@ public class DB {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 var result = new HashMap<String, Object>(5);
-                for (var attr: attrs) {
+                for (var attr : attrs) {
                     result.put(attr, resultSet.getObject(attr));
                 }
                 list.add(result);
@@ -81,7 +86,8 @@ public class DB {
         }
         return false;
     }
-    public static boolean insert(String sql, Object ... objects) throws SQLException {
+
+    public static boolean insert(String sql, Object... objects) throws SQLException {
         var connection = DBConnection.getConnection();
         var preparedStatement = connection.prepareStatement(sql);
         if (objects.length > 0) {
@@ -94,11 +100,12 @@ public class DB {
 
     /**
      * 向数据库当中添加数据
+     *
      * @param tableName 表名
-     * @param attrMap 属性字典 key: 表当中的列名，value: 其中的属性值
+     * @param attrMap   属性字典 key: 表当中的列名，value: 其中的属性值
      * @return 是否添加成功
      */
-    public static boolean insert(String tableName , Map<String, String> attrMap) {
+    public static boolean insert(String tableName, Map<String, String> attrMap) {
         if (Objects.isNull(tableName) || Objects.isNull(attrMap)) {
             return false;
         } else {
@@ -128,6 +135,7 @@ public class DB {
         }
         return false;
     }
+
     /***
      * 删除表当中的元素
      * @param tableName 表名
