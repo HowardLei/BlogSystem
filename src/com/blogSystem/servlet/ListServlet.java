@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * ListServlet class
@@ -25,11 +26,34 @@ public class ListServlet extends HttpServlet {
         response.setCharacterEncoding(UTF_8_ENCODING);
         response.setContentType("text/html;charset=utf-8");
         var account = request.getSession().getAttribute("account");
-        var sql = String.format("select * from blog limit 0,%d", LINE_LIMITS);
-        var list = DB.select(sql);
-        list.forEach(System.out::println);
+        var searchID = String.format("select id from user where account = \'%s\'", account);
+        var res = DB.select(searchID,"id");
+        String id = null;
+        for (Map<String, Object> map : res) {
+            id = String.valueOf(map.get("id"));
+        }
+        System.out.println(id);
+        // 通过 sqlBuilder 构造 SQL 语句
+        var sqlBuilder = new StringBuilder("select ");
+        sqlBuilder.append("title, ").append("author, ").append("blog.createdTime ");
+        sqlBuilder.append("from user, blog ");
+        sqlBuilder.append("where blog.author = user.nickName").append(" && ").append("blog.userID = ").append(id);
+        sqlBuilder.append(" limit 0, ").append(LINE_LIMITS).append(';');
+        var sql = sqlBuilder.toString();
+        var fields = new String[] {"title", "author", "createdTime"};
+        var list = DB.select(sql, fields);
+        var jsonStringBuilder = new StringBuilder("[");
+        for (Map<String, Object> map : list) {
+            jsonStringBuilder.append(map.toString());
+        }
+        jsonStringBuilder.append(']');
+        // FIXME: 这个地方时间的字符串没拼接正确。时间这个地方不应该有冒号。
+        var json = jsonStringBuilder.toString().replace('=', ':').replace("}{", "},{").replace("{", "{\"").replace(":", "\":\"").replace(", ", "\", \"").replace("}", "\"}");
+        // 最后返回的 Json 数组
+        response.getWriter().append(json);
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
     }
 }
