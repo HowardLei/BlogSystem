@@ -12,7 +12,7 @@ import java.util.Objects;
 public class DBConnection {
     private static final String LOGIN_USER = "root";
     private static final String PASSWORD = "SweetieCan@0830";
-    private static final String URL = "jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone = GMT";
+    private static final String URL = "jdbc:mysql://localhost:3306/blogSystem?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone = GMT";
     private static final String DRIVER_CLASS = "com.mysql.cj.jdbc.Driver";
     private static Connection connection = null;
 
