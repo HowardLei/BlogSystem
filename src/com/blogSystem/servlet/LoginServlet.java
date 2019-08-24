@@ -29,10 +29,11 @@ public class LoginServlet extends HttpServlet {
         map.put("pwd", String.format("\'%s\'", pwd));
         var res = DB.select("user", map, DB.AND);
         if (res) {
+            // 当需要在 Servlet 之间互相传递数据的时候，通过 request.getSession().setAttribute() 当中设置属性名和属性值。注意：属性值都会按照 Object 类型保存。
+            request.getSession().setAttribute("account", account);
             response.sendRedirect("html/home.html");
         } else {
-            // FIXME: 2019-08-17 当登录失败了以后，还不知道如何处理
-            request.getRequestDispatcher("");
+            response.sendRedirect("#");
         }
     }
     @Override
