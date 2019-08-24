@@ -18,6 +18,7 @@ public class UpdateServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding(UTF_8_ENCODING);
         response.setCharacterEncoding(UTF_8_ENCODING);
+        response.setContentType("text/html;charset=utf-8");
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
