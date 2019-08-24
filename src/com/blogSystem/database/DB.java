@@ -18,8 +18,7 @@ public class DB {
 
     /**
      * 查找数据库当中的元素
-     *
-     * @param sql   查找的 SQL 语句
+     * @param sql 查找的 SQL 语句
      * @param attrs 想要获得的属性名
      * @return 属性列表
      */
