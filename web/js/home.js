@@ -1,3 +1,6 @@
+function showText() {
+    document.getElementById("successMessage").innerText = ""
+}
 function addNewBlog() {
     window.open("/BlogSystem/html/newBlog.html","__self")
 }
@@ -16,13 +19,21 @@ function show() {
         // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
             //请求成功时处理
+            alert("成功获得值")
         },
         "complete": function () {
             // 请求完成的处理
         },
         "error": function () {
             // 请求出错处理
-            alert("出错了")
         }
     })
+}
+function showTable(req) {
+    alert(Object.keys(req).length)
+    var table = "<table>"
+    for (let i = 0; i < 10; i++) {
+
+    }
+    $("body").append(table)
 }
