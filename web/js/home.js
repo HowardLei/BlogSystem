@@ -20,6 +20,10 @@ function show() {
         "success": function (req) {
             //请求成功时处理
             alert("成功获得值")
+            for (let i = 0; i < req.length; i++) {
+                console.log(req[i])
+            }
+            showTable(req)
         },
         "complete": function () {
             // 请求完成的处理
@@ -30,10 +34,14 @@ function show() {
     })
 }
 function showTable(req) {
-    alert(Object.keys(req).length)
     var table = "<table>"
-    for (let i = 0; i < 10; i++) {
-
+    table += "<tr><td>标题</td><td>作者</td><td>修改时间</td></tr>>"
+    for (let i = 0; i < req.length; i++) {
+        table += "<tr><td>" + req[i]["title"] +
+            "</td><td>" + req[i]["author"] +
+            "</td><td>" + req[i]["createdTime"] +
+            "</td></tr>"
     }
+    table += "</table>"
     $("body").append(table)
 }

@@ -32,7 +32,6 @@ public class ListServlet extends HttpServlet {
         for (Map<String, Object> map : res) {
             id = String.valueOf(map.get("id"));
         }
-        System.out.println(id);
         // 通过 sqlBuilder 构造 SQL 语句
         var sqlBuilder = new StringBuilder("select ");
         sqlBuilder.append("title, ").append("author, ").append("blog.createdTime ");
@@ -43,13 +42,11 @@ public class ListServlet extends HttpServlet {
         var fields = new String[] {"title", "author", "createdTime"};
         var list = DB.select(sql, fields);
         var jsonStringBuilder = new StringBuilder("[");
-        for (Map<String, Object> map : list) {
+        for (var map : list) {
             jsonStringBuilder.append(map.toString());
         }
         jsonStringBuilder.append(']');
-        // FIXME: 这个地方时间的字符串没拼接正确。时间这个地方不应该有冒号。
-        var json = jsonStringBuilder.toString().replace('=', ':').replace("}{", "},{").replace("{", "{\"").replace(":", "\":\"").replace(", ", "\", \"").replace("}", "\"}");
-        // 最后返回的 Json 数组
+        var json = jsonStringBuilder.toString().replace("=", "\" =\"").replace("}{", "},{").replace("{", "{\"").replace(", ", "\", \"").replace("}", "\"}").replace('=', ':');
         response.getWriter().append(json);
     }
     @Override
