@@ -3,8 +3,8 @@
  * 获得数据，检查数据的合法性
  */
 function getData() {
-    var password = document.getElementsByName('pwd')[0].value
-    var rePassword = document.getElementsByName('rePassword')[0].value
+    let password = document.getElementsByName('pwd')[0].value;
+    let rePassword = document.getElementsByName('rePassword')[0].value;
     if (password == null || rePassword == null) {
         alert("对不起，请查看一下有没有信息没有输入进去。")
         return
@@ -22,7 +22,7 @@ function getData() {
  * @param password 密码
  */
 function excuteData(account, password) {
-    var data = {"account": account, "pwd": password}
+    let data = {"account": account, "pwd": password};
     $.ajax({
         url: "/BlogSystem/register",    //请求的url地址
         dataType: "json",   // 返回格式为json
