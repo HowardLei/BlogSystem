@@ -30,8 +30,7 @@ function show() {
     })
 }
 function showTable(req) {
-    // FIXME: table 能够添加了，但是不能只创建 1 次 table。每次点击的时候都会
-    var table = "<table id='table'>"
+    let table = "<table>";
     table += "<tr><td>标题</td><td>作者</td><td>修改时间</td></tr>"
     for (let i = 0; i < req.length; i++) {
         table += "<tr><td>" + req[i]["title"] +
@@ -40,5 +39,5 @@ function showTable(req) {
             "</td></tr>"
     }
     table += "</table>"
-    $("body").append(table)
+    $("#table").empty().append(table)
 }
