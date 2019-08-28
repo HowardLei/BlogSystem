@@ -27,6 +27,7 @@ public class UploadBlogServlet extends HttpServlet {
         response.setCharacterEncoding(UTF_8_ENCODING);
         response.setContentType("type/html,charset=utf-8");
         var title = request.getParameter("title");
+        title = String.join("\'", title);
         var content = request.getParameter("content");
         var jsonMap = new HashMap<String, String>(1);
         // 根据标题是否相同来判断有没有相同文章
@@ -35,9 +36,30 @@ public class UploadBlogServlet extends HttpServlet {
         if (titleList.size() == 0) {
             // 获得他的账号信息
             var account = request.getSession().getAttribute("account");
+            var sqlBuilder = new StringBuilder("select id nickName from user where account = \'");
+            sqlBuilder.append(account).append("\';");
+            var list = DB.select(sqlBuilder.toString(), "id", "nickName");
+            var stringObjectMap = list.get(0);
+            var userId = stringObjectMap.get("id");
+            var author = stringObjectMap.get("author");
             var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             var date = dateFormat.format(new Date());
-            var insertSQL = String.format("insert into Blog ()");
+            sqlBuilder.delete(0, sqlBuilder.length());
+            var attrMap = new HashMap<String, Object>(6);
+            attrMap.put("title", title);
+            attrMap.put("content", content);
+            attrMap.put("author", author);
+            attrMap.put("type", "随笔");
+            attrMap.put("userId", userId);
+            attrMap.put("createdTime", date);
+            sqlBuilder.append("insert into blog (title, content, author, type, userId, createdTime) values (");
+            sqlBuilder.append("\'").append(title).append("\',");
+            sqlBuilder.append('\'').append(content).append("\',");
+            sqlBuilder.append('\'').append(author).append("\',");
+            sqlBuilder.append('\'').append("随笔").append("\',");
+            sqlBuilder.append(Long.valueOf(userId.toString())).append(",");
+            sqlBuilder.append('\'').append(date).append("\');");
+//            DB.insert("blog", )
         } else {
             jsonMap.put("msg", "403");
         }
