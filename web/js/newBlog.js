@@ -14,7 +14,7 @@ function submitData() {
         "success": function (req) {
             //请求成功时处理
             if (req["msg"] == "200") {
-                alert("博客发送成功")
+                alert("博客上传成功")
                 window.open("/BlogSystem/html/home.html")
             } else if (req["msg"] = "403") {
                 alert("对不起，无法添加，请查看一下标题是否重复")

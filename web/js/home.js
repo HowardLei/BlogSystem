@@ -5,6 +5,7 @@ function addNewBlog() {
     window.open("/BlogSystem/html/newBlog.html","__self")
 }
 function logOut() {
+    window.open("/BlogSystem")
 }
 function show() {
     $.ajax({
@@ -40,4 +41,7 @@ function showTable(req) {
     }
     table += "</table>"
     $("#table").empty().append(table)
+}
+function changeBlog() {
+
 }
