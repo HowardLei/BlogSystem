@@ -1,7 +1,8 @@
 function submitData() {
     let title = document.getElementById("title").value()
     let content = document.getElementById("content").value()
-    let data = {"title": title, "content": content};
+    let data = {"title": title, "content": content}
+    let value = 213;
     $.ajax({
         url: "/BlogSystem/uploadBlog",    //请求的url地址
         dataType: "json",   // 返回格式为json
@@ -14,9 +15,11 @@ function submitData() {
         "success": function (req) {
             //请求成功时处理
             if (req["message"] == "200") {
-
+                window.open("/BlogSystem/html/home.html")
             } else if (req["message"] = "403") {
                 alert("对不起，无法添加，请查看一下标题是否重复")
+            } else {
+                alert("")
             }
         },
         "complete": function () {
