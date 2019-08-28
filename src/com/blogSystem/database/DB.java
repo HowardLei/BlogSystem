@@ -14,6 +14,9 @@ public class DB {
     public static final String AND = " and";
 
     public static void main(String[] args) {
+        var title = "title";
+        title = String.join(title, "34");
+        System.out.println(title);
     }
 
     /**
@@ -101,7 +104,7 @@ public class DB {
      * 向数据库当中添加数据
      *
      * @param tableName 表名
-     * @param attrMap   属性字典 key: 表当中的列名，value: 其中的属性值
+     * @param attrMap 属性字典 key: 表当中的列名，value: 其中的属性值
      * @return 是否添加成功
      */
     public static boolean insert(String tableName, Map<String, String> attrMap) {
@@ -152,5 +155,14 @@ public class DB {
         }
         var preparedStatement = connection.prepareStatement(stringBuilder.toString());
         return preparedStatement.execute();
+    }
+
+    /**
+     * 更新数据库当中的元素
+     * @param tableName
+     * @param attrsMap
+     */
+    public static void update(String tableName, Map<String, String> attrsMap) {
+
     }
 }
