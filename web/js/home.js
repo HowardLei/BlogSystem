@@ -43,5 +43,9 @@ function showTable(req) {
     $("#table").empty().append(table)
 }
 function changeBlog() {
+    if (document.getElementById("table") == null) {
+        alert("对不起，没有博客数据，无法修改")
+    } else {
 
+    }
 }
