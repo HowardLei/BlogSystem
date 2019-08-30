@@ -158,11 +158,11 @@ public class DB {
     }
 
     /**
-     * 更新数据库当中的元素
-     * @param tableName
-     * @param attrsMap
+     * 向数据库当中更新数据
+     * @param tableName 表名
+     * @param limitAttrMap 需要限制的属性字典 key: 表当中的列名，value: 其中的属性值
+     * @param changeAttrMap 需要更新的属性字典 key: 表当中的列名，value: 其中的属性值
      */
-    public static void update(String tableName, Map<String, String> attrsMap) {
-
+    public static void update(String tableName, Map<String, String> limitAttrMap, Map<String, String> changeAttrMap) {
     }
 }
