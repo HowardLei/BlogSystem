@@ -12,11 +12,11 @@ import java.util.*;
  */
 public class DB {
     public static final String AND = " and";
-
     public static void main(String[] args) {
-        var title = "title";
-        title = String.join(title, "34");
-        System.out.println(title);
+        var map = new HashMap<String, String>(2);
+        map.put("title", "falstaff");
+        map.put("faced","fda");
+        update("blog", map, map, AND);
     }
 
     /**
@@ -162,7 +162,42 @@ public class DB {
      * @param tableName 表名
      * @param limitAttrMap 需要限制的属性字典 key: 表当中的列名，value: 其中的属性值
      * @param changeAttrMap 需要更新的属性字典 key: 表当中的列名，value: 其中的属性值
+     * @return 是否更新数据
      */
-    public static void update(String tableName, Map<String, String> limitAttrMap, Map<String, String> changeAttrMap) {
+    public static Integer update(String tableName, Map<String, String> limitAttrMap, Map<String, String> changeAttrMap, String predicate) {
+        var connection = DBConnection.getConnection();
+        var stringBuilder = new StringBuilder("update ");
+        stringBuilder.append(tableName).append(" set ");
+        var iter = limitAttrMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            var entry = iter.next();
+            stringBuilder.append(entry.getKey()).append(" = ");
+            stringBuilder.append("\'").append(entry.getValue()).append("\'");
+            if (iter.hasNext()) {
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append(" where ");
+        iter = changeAttrMap.entrySet().iterator();
+        while (iter.hasNext()) {
+            var entry = iter.next();
+            stringBuilder.append(entry.getKey()).append(" = ");
+            stringBuilder.append("\'").append(entry.getValue()).append("\'");
+            if (iter.hasNext()) {
+                stringBuilder.append(predicate).append(' ');
+            }
+        }
+        stringBuilder.append(';');
+        try {
+            var statement = connection.createStatement();
+            var update = statement.executeUpdate(stringBuilder.toString());
+            if (limitAttrMap == null) {
+
+            }
+            return update;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
