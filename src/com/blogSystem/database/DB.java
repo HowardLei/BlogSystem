@@ -13,9 +13,8 @@ import java.util.*;
 public class DB {
     public static final String AND = " and";
     public static void main(String[] args) {
-        var map = new HashMap<String, String>(2);
+        var map = new HashMap<String, String>(1);
         map.put("title", "falstaff");
-        map.put("faced","fda");
         update("blog", map, map, AND);
     }
 
