@@ -33,7 +33,7 @@ public class EditServlet extends HttpServlet {
         var attrMap = new HashMap<String, String>(2);
         attrMap.put("title", title);
         attrMap.put("content", content);
-        DB.update("blog", limitMap, attrMap, DB.AND);
+        var update = DB.update("blog", limitMap, attrMap, DB.AND);
     }
 
     /**
