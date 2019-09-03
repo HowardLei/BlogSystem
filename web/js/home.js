@@ -27,6 +27,12 @@ function show() {
         }
     })
 }
+// FIXME: 利用JS当中的函数重写 showTable() 函数
+function createTable(target) {
+    let table = document.createElement("table")
+    table.style.border = "1px"
+    table.style.borderCollapse = "collapse"
+}
 function showTable(req) {
     let table = "<table>";
     table += "<tr><td>标题</td><td>作者</td><td>修改时间</td></tr>"
