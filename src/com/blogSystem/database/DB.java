@@ -152,6 +152,7 @@ public class DB {
             var attrsMapStr = attrsMap.toString().substring(1, attrsMap.toString().length() - 1).replace(",", " or ");
             stringBuilder.append(attrsMapStr);
         }
+        stringBuilder.append(';');
         var preparedStatement = connection.prepareStatement(stringBuilder.toString());
         return preparedStatement.execute();
     }

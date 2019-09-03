@@ -1,6 +1,5 @@
 function changeData() {
     let id = window.location.href.substring(window.location.href.length - 1)
-    alert(window.location.href)
     let title = document.getElementById("title").value
     let content = document.getElementById("content").value
     let data = {"title": title, "content": content, "id": id}
@@ -16,6 +15,13 @@ function changeData() {
         // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
             //请求成功时处理
+            if (req["message"] == "200") {
+                alert("更新成功")
+                // 返回之前的界面，调用 window.history 对象的 back 方法
+                window.history.back()
+            } else if (req["message"] == "403") {
+                alert("对不起，更新失败。")
+            }
         },
         "complete": function () {
             // 请求完成的处理
