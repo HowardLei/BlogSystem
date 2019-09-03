@@ -28,12 +28,23 @@ public class EditServlet extends HttpServlet {
         var id = request.getParameter("id");
         var title = request.getParameter("title");
         var content = request.getParameter("content");
-        var limitMap = new HashMap<String, String>(1);
-        limitMap.put("id", id);
-        var attrMap = new HashMap<String, String>(2);
-        attrMap.put("title", title);
-        attrMap.put("content", content);
+        var attrMap = new HashMap<String, String>(1);
+        attrMap.put("id", id);
+        var limitMap = new HashMap<String, String>(2);
+        limitMap.put("title", title);
+        limitMap.put("content", content);
         var update = DB.update("blog", limitMap, attrMap, DB.AND);
+        String json = null;
+        if (update == null) {
+            json = "{\"message\": \"403\"}";
+        } else {
+            if (update.equals(1)) {
+                json = "{\"message\": \"200\"}";
+            } else {
+                json = "{\"message\": \"403\"}";
+            }
+        }
+        response.getWriter().append(json);
     }
 
     /**
