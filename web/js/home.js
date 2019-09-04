@@ -32,6 +32,12 @@ function createTable(target) {
     let table = document.createElement("table")
     table.style.border = "1px"
     table.style.borderCollapse = "collapse"
+    let colums = 4
+    let row = target.length
+    for (let i = 0; i < colums; i++) {
+        let tr = table.insertRow(i)
+
+    }
 }
 function showTable(req) {
     let table = "<table>";
