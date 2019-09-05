@@ -36,7 +36,6 @@ function createTable(target) {
     let row = target.length
     for (let i = 0; i < colums; i++) {
         let tr = table.insertRow(i)
-
     }
 }
 function showTable(req) {
@@ -46,7 +45,8 @@ function showTable(req) {
         table += "<tr><td>" + req[i]["title"] +
             "</td><td>" + req[i]["author"] +
             "</td><td>" + req[i]["createdTime"] +
-            "</td><td>" + "<input type='button' value='编辑' onclick='changeBlog(this)' id='" + (i + 1) +"' />" +
+            "</td><td>" + "<input type='button' value='编辑' onclick='changeBlog(this)' id='" + (i + 1) + "' />" +
+            "</td><td>" + "<input type='button' value='删除' onclick='deleteBlog(this)' id='" + (i + 1) + "' />" +
             "</td></tr>"
     }
     table += "</table>"
@@ -55,4 +55,33 @@ function showTable(req) {
 function changeBlog(element) {
     let id = element.id
     window.location.href = "/BlogSystem/edit?id=" + id
+}
+function deleteBlog(element) {
+    let id = element.id
+    let data = {"id": id}
+    $.ajax({
+        url: "/BlogSystem/delete",    //请求的url地址
+        dataType: "json",   // 返回格式为json
+        async: true,// 请求是否异步，默认为异步，这也是ajax重要特性
+        data: data, // 参数值
+        type: "post",  // 请求方式
+        "beforeSend": function () {
+            //请求前的处理
+        },
+        // 在后台处理该用户名是否存在以及能否添加
+        "success": function (req) {
+            //请求成功时处理
+            if (req["message"] == "200") {
+                alert("删除成功")
+            } else if (req["message"] == "403") {
+                alert("对不起，没有该数据，删除失败")
+            }
+        },
+        "complete": function () {
+            // 请求完成的处理
+        },
+        "error": function () {
+            // 请求出错处理
+        }
+    })
 }

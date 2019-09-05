@@ -12,6 +12,7 @@ import java.util.*;
  */
 public class DB {
     public static final String AND = " and";
+    public static final String OR = " or";
     public static void main(String[] args) {
         var map = new HashMap<String, String>(1);
         map.put("title", "falstaff");
@@ -144,13 +145,21 @@ public class DB {
      * @return 是否删除成功
      * @throws SQLException 当执行 SQL 语句失败的时候，抛出此异常。
      */
-    public static boolean delete(String tableName, Map<String, String> attrsMap) throws SQLException {
+    public static boolean delete(String tableName, Map<String, String> attrsMap, String predicate) throws SQLException {
         var connection = DBConnection.getConnection();
         var stringBuilder = new StringBuilder("delete from ").append(tableName);
         if (Objects.nonNull(attrsMap)) {
             stringBuilder.append(" where ");
-            var attrsMapStr = attrsMap.toString().substring(1, attrsMap.toString().length() - 1).replace(",", " or ");
-            stringBuilder.append(attrsMapStr);
+            var iterator = attrsMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                var entry = iterator.next();
+                var key = entry.getKey();
+                var value = String.format("\'%s\'", entry.getValue());
+                stringBuilder.append(key).append(" = ").append(value);
+                if (iterator.hasNext()) {
+                    stringBuilder.append(predicate).append(' ');
+                }
+            }
         }
         stringBuilder.append(';');
         var preparedStatement = connection.prepareStatement(stringBuilder.toString());
