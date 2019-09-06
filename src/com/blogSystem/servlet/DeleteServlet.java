@@ -22,16 +22,14 @@ public class DeleteServlet extends HttpServlet {
     private static final String UTF_8_ENCODING = "utf-8";
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding(UTF_8_ENCODING);
         response.setCharacterEncoding(UTF_8_ENCODING);
         response.setContentType("text/html;charset=utf-8");
-        var id = request.getParameter("id");
-        var attrMap = new HashMap<String, String>(1);
-        attrMap.put("id", id);
+        var title = request.getParameter("title");
+        var content = request.getParameter("content");
+        var attrMap = new HashMap<String, String>(2);
+        attrMap.put("title", title);
+        attrMap.put("content", content);
         String json = null;
         try {
             var isDelete = DB.delete("blog", attrMap, DB.AND);
@@ -40,9 +38,13 @@ public class DeleteServlet extends HttpServlet {
             } else {
                 json = "{\"message\": \"403\"}";
             }
+            response.getWriter().append(json);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        response.getWriter().append(json);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     }
 }

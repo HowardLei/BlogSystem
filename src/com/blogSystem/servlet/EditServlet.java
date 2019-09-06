@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * EditServlet class
@@ -65,7 +64,7 @@ public class EditServlet extends HttpServlet {
         stringBuilder.append("where id = ").append(id).append(';');
         var list = DB.select(stringBuilder.toString(), "title", "content");
         var map = list.get(0);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
+        for (var entry : map.entrySet()) {
             request.setAttribute(entry.getKey(), entry.getValue());
         }
         request.getRequestDispatcher("/html/index.jsp").forward(request, response);

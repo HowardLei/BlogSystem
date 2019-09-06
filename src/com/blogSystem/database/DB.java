@@ -163,7 +163,8 @@ public class DB {
         }
         stringBuilder.append(';');
         var preparedStatement = connection.prepareStatement(stringBuilder.toString());
-        return preparedStatement.execute();
+        // 注意这：当处理的是删除操作的时候，他的返回值是 ResultSet 类型的值，而删除的时候由于没有 ResultSet，所以
+        return !preparedStatement.execute();
     }
 
     /**

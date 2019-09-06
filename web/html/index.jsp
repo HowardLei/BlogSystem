@@ -18,5 +18,6 @@
     <input type="text" name="title" id="title" placeholder="文章标题" value="${title}" />
     <textarea id="content" placeholder="正文">${content}</textarea>
     <input type="button" value="提交" id="button" onclick="changeData()" />
+    <input type="button" value="删除" id="deleteButton" onclick="deleteBlog()">
 </body>
 </html>

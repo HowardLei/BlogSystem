@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * ListServlet class
@@ -29,7 +28,7 @@ public class ListServlet extends HttpServlet {
         var searchID = String.format("select id from user where account = \'%s\'", account);
         var res = DB.select(searchID,"id");
         String id = null;
-        for (Map<String, Object> map : res) {
+        for (var map : res) {
             id = String.valueOf(map.get("id"));
         }
         // 通过 sqlBuilder 构造 SQL 语句
