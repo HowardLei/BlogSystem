@@ -33,12 +33,12 @@ public class ListServlet extends HttpServlet {
         }
         // 通过 sqlBuilder 构造 SQL 语句
         var sqlBuilder = new StringBuilder("select ");
-        sqlBuilder.append("title, ").append("author, ").append("blog.createdTime ");
+        sqlBuilder.append("title, ").append("author, ").append("blog.createdTime, ").append("blog.id ");
         sqlBuilder.append("from user, blog ");
         sqlBuilder.append("where blog.author = user.nickName").append(" && ").append("blog.userID = ").append(id);
         sqlBuilder.append(" limit 0, ").append(LINE_LIMITS).append(';');
         var sql = sqlBuilder.toString();
-        var fields = new String[] {"title", "author", "createdTime"};
+        var fields = new String[] {"title", "author", "createdTime", "id"};
         var list = DB.select(sql, fields);
         var jsonStringBuilder = new StringBuilder("[");
         for (var map : list) {

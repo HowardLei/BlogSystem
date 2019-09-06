@@ -27,7 +27,6 @@ function show() {
         }
     })
 }
-// FIXME: 利用JS当中的函数重写 showTable() 函数
 function showTable(req) {
     let table = "<table>";
     table += "<tr><td>标题</td><td>作者</td><td>修改时间</td></tr>"
@@ -35,7 +34,7 @@ function showTable(req) {
         table += "<tr><td>" + req[i]["title"] +
             "</td><td>" + req[i]["author"] +
             "</td><td>" + req[i]["createdTime"] +
-            "</td><td>" + "<input type='button' value='编辑' onclick='changeBlog(this)' id='" + (i + 1) + "' />" +
+            "</td><td>" + "<input type='button' value='编辑' onclick='changeBlog(this)' id='" + req[i]["id"] + "' />" +
             "</td></tr>"
     }
     table += "</table>"
