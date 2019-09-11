@@ -19,6 +19,7 @@ import java.io.IOException;
 public class ListServlet extends HttpServlet {
     private static final String UTF_8_ENCODING = "utf-8";
     private static final int LINE_LIMITS = 10;
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding(UTF_8_ENCODING);
@@ -50,6 +51,5 @@ public class ListServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }
