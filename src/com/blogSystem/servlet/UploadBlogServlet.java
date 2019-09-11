@@ -29,11 +29,11 @@ public class UploadBlogServlet extends HttpServlet {
         response.setContentType("type/html,charset=utf-8");
         var title = request.getParameter("title");
         var content = request.getParameter("content");
-        var jsonMap = new HashMap<String, String>(1);
         // 根据标题是否相同来判断有没有相同文章
         var sqlBuilder = new StringBuilder("select title from blog where title = ");
         sqlBuilder.append('\'').append(title).append("\';");
         var titleList = DB.select(sqlBuilder.toString(), "title");
+        String json = null;
         if (titleList.size() == 0) {
             // 获得他的账号信息
             var account = request.getSession().getAttribute("account");
@@ -55,14 +55,14 @@ public class UploadBlogServlet extends HttpServlet {
             attrMap.put("createdTime", String.format("\'%s\'", date));
             var isInsert = DB.insert("blog", attrMap);
             if (isInsert) {
-                jsonMap.put("\"msg\"", "\"200\"");
+                json = "{\"msg\": \"200\"}";
             } else {
-                jsonMap.put("\"msg\"", "\"403\"");
+                json = "{\"msg\": \"403\"}";
             }
         } else {
-            jsonMap.put("\"msg\"", "\"403\"");
+            json = "{\"msg\": \"403\"}";
         }
-        response.getWriter().append(jsonMap.toString().replace('=', ':'));
+        response.getWriter().append(json);
     }
 
     @Override
