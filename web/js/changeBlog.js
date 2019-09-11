@@ -1,5 +1,6 @@
 const title = document.getElementById("title").value;
 const content = document.getElementById("content").value;
+
 function changeData() {
     let id = window.location.href.substring(window.location.href.length - 1)
     let data = {"title": title, "content": content, "id": id}
@@ -31,6 +32,7 @@ function changeData() {
         }
     })
 }
+
 function deleteBlog() {
     let data = {"title": title, "content": content}
     $.ajax({
@@ -41,7 +43,9 @@ function deleteBlog() {
         type: "post",  // 请求方式
         "beforeSend": function () {
             //请求前的处理
-            alert("处理到这了")
+            if (!confirm("是否删除博文？此操作无法撤回。")) {
+                this.abort()
+            }
         },
         // 在后台处理该用户名是否存在以及能否添加
         "success": function (req) {
