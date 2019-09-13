@@ -4,11 +4,9 @@ import com.blogSystem.database.DB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * EditServlet class
@@ -33,11 +31,11 @@ public class EditServlet extends HttpServlet {
         limitMap.put("title", title);
         limitMap.put("content", content);
         var update = DB.update("blog", limitMap, attrMap, DB.AND);
-        String json = null;
+        String json;
         if (update == null) {
             json = "{\"message\": \"403\"}";
         } else {
-            if (update.equals(1)) {
+            if (Objects.equals(update, 1)) {
                 json = "{\"message\": \"200\"}";
             } else {
                 json = "{\"message\": \"403\"}";
@@ -48,8 +46,8 @@ public class EditServlet extends HttpServlet {
 
     /**
      * 在 home.html 当中点击编辑按钮以后调用 get 请求
-     * @param request
-     * @param response
+     * @param request 请求
+     * @param response 响应
      * @throws ServletException
      * @throws IOException
      */
