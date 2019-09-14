@@ -35,18 +35,18 @@ public class RegisterServlet extends HttpServlet {
         if (list.size() == 0) {
             isInsert = DB.insert("user", infoMap);
         }
-        // 创建返回值的字典
-        var jsonMap = new HashMap<String, String>(1);
+        // 创建 json 对象
+        String json;
         if (isInsert) {
-            jsonMap.put("\"code\"", "\"200\"");
+            //language=JSON
+            json = "{\"code\": \"200\"}";
         } else {
-            jsonMap.put("\"code\"", "\"403\"");
+            //language=JSON
+            json = "{\"code\": \"403\"}";
         }
-        var jsonStr = jsonMap.toString().replace("=", ": ");
-        response.getWriter().append(jsonStr);
+        response.getWriter().append(json);
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
     }
 }
