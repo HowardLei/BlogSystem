@@ -30,9 +30,9 @@ public class DeleteServlet extends HttpServlet {
         var attrMap = new HashMap<String, String>(2);
         attrMap.put("title", title);
         attrMap.put("content", content);
-        String json = null;
         try {
             var isDelete = DB.delete("blog", attrMap, DB.AND);
+            String json;
             if (isDelete) {
                 json = "{\"message\": \"200\"}";
             } else {
@@ -45,6 +45,6 @@ public class DeleteServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     }
 }
