@@ -21,7 +21,6 @@ import java.util.HashMap;
 @WebServlet(name = "UploadBlogServlet", value = {"/uploadBlog"}, description = "上传博客的 Servlet")
 public class UploadBlogServlet extends HttpServlet {
     private static final String UTF_8_ENCODING = "utf-8";
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding(UTF_8_ENCODING);
@@ -33,7 +32,7 @@ public class UploadBlogServlet extends HttpServlet {
         var sqlBuilder = new StringBuilder("select title from blog where title = ");
         sqlBuilder.append('\'').append(title).append("\';");
         var titleList = DB.select(sqlBuilder.toString(), "title");
-        String json = null;
+        String json;
         if (titleList.size() == 0) {
             // 获得他的账号信息
             var account = request.getSession().getAttribute("account");
